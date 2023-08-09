@@ -13,7 +13,7 @@ public class GUIChampionCounter extends ChampionCounter {
 
     public GUIChampionCounter(){
         setVisible(true); //application visible
-        setSize(700,700); //size of application
+        setSize(700,350); //size of application
         setDefaultCloseOperation(EXIT_ON_CLOSE); //close on X
         setLocationRelativeTo(null);
         setTitle("Champion Counter - League of Legends"); //Title
