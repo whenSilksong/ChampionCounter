@@ -9,42 +9,15 @@ import java.util.*;
 import javax.swing.*;
 
 public class ChampionCounter extends JFrame {
+    public static String mostPlayedChampions = "";
 
     public static void main(String[] args) {
         JFrame guiLayout = new GUIChampionCounter();
-        Scanner sc = new Scanner(System.in);
-        String choice;
-        do {
-            System.out.println("Press following key for actions:");
-            System.out.println("Enter champion: E");
-            System.out.println("Get full List: CL");
-            System.out.println("Most played champions: MP");
-            System.out.println("Reset list counter: R");
-            System.out.println("To exit, type 'EXIT'");
-
-            // enter choice
-            choice = sc.next();
-            if (choice.equalsIgnoreCase("E")) {
-                EnterChampionsToHashMap();
-            } else if (choice.equalsIgnoreCase("CL")) {
-                getFullChampionList();
-            } else if (choice.equalsIgnoreCase("R")) {
-                System.out.println("Are you sure to reset the stats? \nPress: yes/no");
-                String yesNoCheck = sc.next();
-                if (yesNoCheck.equalsIgnoreCase("YES")) {
-                    resetList();
-                }
-            } else if (choice.equalsIgnoreCase("MP")) {
-                getTop10Champions();
-            }
-        } while (!choice.equalsIgnoreCase("EXIT"));
-        System.out.println("Program has ended.");
-        sc.close();
     }
 
-    //Saves the entered champions in a HashMap
+    //Add champion input to hashmap
     public static void EnterChampionsToHashMap() {
-        //Create HashMap
+        // Create or load HashMap
         HashMap<String, Integer> map = new HashMap<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("championCounterList.CSV"));
@@ -54,22 +27,22 @@ public class ChampionCounter extends JFrame {
                 String[] arr = str[0].split(";");
                 map.put(arr[0], Integer.parseInt(arr[1]));
             }
-        } catch (FileNotFoundException e) { //If file is not found
+            br.close();
+        } catch (FileNotFoundException e) {
             System.out.println("File Not Found");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //Enter Champions
-        Scanner enterchamps = new Scanner(System.in);
-        System.out.println("Which champions are played?");
-        String[] playedChampions = new String[10];
+
+        // Update champion counters based on user input
         for (int i = 0; i < 10; i++) {
-            playedChampions[i] = enterchamps.next();
-            if (map.containsKey(playedChampions[i])){
-                map.put(playedChampions[i], map.get(playedChampions[i]) + 1);
+            String championName = GUIChampionCounter.playedChampions[i];
+            if (map.containsKey(championName)) {
+                map.put(championName, map.get(championName) + 1);
             }
         }
-        //Saves and overwrite CSVfile
+
+        // Save updated data to CSV file
         System.out.println(map);
         try {
             HashMapToCSV(map, "championCounterList.CSV");
@@ -138,16 +111,13 @@ public class ChampionCounter extends JFrame {
     // sorts and gives the top 10 champions
     public static void getTop10Champions() {
         HashMap<String, Integer> map = new HashMap<>();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader("championCounterList.CSV"));
+        try (BufferedReader br = new BufferedReader(new FileReader("championCounterList.CSV"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] str = line.split(",");
                 String[] arr = str[0].split(";");
                 map.put(arr[0], Integer.parseInt(arr[1]));
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("File Not Found");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -160,7 +130,7 @@ public class ChampionCounter extends JFrame {
             if (count > 10) {
                 break;
             }
-            System.out.println(count + ". " + entry.getKey() + " - " + entry.getValue() + " times played");
+            mostPlayedChampions += count + ". " + entry.getKey() + " - " + entry.getValue() + " times played\n";
             count++;
         }
     }
