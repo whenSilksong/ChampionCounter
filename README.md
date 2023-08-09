@@ -1,4 +1,4 @@
-# aramcounter
+# Champion Counter
 small program that counts the frequency of hit champions.
 program is still under construction!
 
