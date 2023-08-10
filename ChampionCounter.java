@@ -110,6 +110,7 @@ public class ChampionCounter extends JFrame {
 
     // sorts and gives the top 10 champions
     public static void getTop10Champions() {
+        mostPlayedChampions = ""; //Prevents the string from being regenerated
         HashMap<String, Integer> map = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader("championCounterList.CSV"))) {
             String line;
