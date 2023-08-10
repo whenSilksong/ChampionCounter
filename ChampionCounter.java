@@ -54,7 +54,7 @@ public class ChampionCounter extends JFrame {
     //Convert HashMap to CSVfile
     public static void HashMapToCSV(Map<String, Integer> data, String csvFilePath) throws IOException {
         FileWriter writer = new FileWriter(csvFilePath);
-        for (Map.Entry<String, Integer> entry : data.entrySet()){
+        for (Map.Entry<String, Integer> entry : data.entrySet()) {
             String key = entry.getKey();
             Integer value = entry.getValue();
             writer.append(key);
@@ -64,22 +64,6 @@ public class ChampionCounter extends JFrame {
         }
         writer.flush();
         writer.close();
-    }
-
-    //Returns the complete list
-    public static void getFullChampionList(){
-        String pathChampionList = "championCounterList.CSV";
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(pathChampionList));
-            String line;
-            while ((line = br.readLine()) != null) { //reading all to the empty(null) line
-                System.out.print(line + "\n");
-            }
-        } catch (FileNotFoundException e) { //If file is not found
-            System.out.println("File Not Found");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     //Resets the list to 0
